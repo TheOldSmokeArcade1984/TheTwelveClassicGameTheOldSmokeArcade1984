@@ -29,7 +29,7 @@
       text-shadow:0 0 8px rgba(0,240,255,.30);
     }
     
-    body.mode-tv, body.mode-tv * { 
+    body.mode-tv, body.mode-tv *, body.mode-gamepad, body.mode-gamepad * { 
       cursor: none !important; 
       -webkit-tap-highlight-color: transparent;
       spatial-navigation: none !important;
@@ -108,7 +108,6 @@
     
     #introCanvas,#splashCanvas { display:block; width:100%; max-height:18vh; object-fit:cover; background:#000; border-radius:12px; flex-shrink:0; }
 
-    /* CORNICE ANIMATA MULTICOLORE OTTIMIZZATA */
     .canvas-wrap{
       margin: 12px auto 0;
       position: relative;
@@ -116,9 +115,8 @@
       width: 100%; 
       max-width: calc(100dvh - 280px); 
       max-height: calc(100dvh - 280px);
-      padding: 4px; /* Lo spessore della cornice */
+      padding: 4px; 
       border-radius: 12px;
-      /* Il linear-gradient si adatta perfettamente alle proporzioni senza deformarsi */
       background: linear-gradient(90deg, #ff007f, #ffff00, #00ff66, #00f0ff, #8a2be2, #ff007f);
       background-size: 200% 100%;
       animation: neonFlow 2.5s linear infinite;
@@ -149,9 +147,8 @@
     
     .controls{display:none; margin-top:12px}
     body.touch .controls{display:block}
-    body.mode-pc .controls, body.mode-tv .controls{display:none !important}
+    body.mode-pc .controls, body.mode-tv .controls, body.mode-gamepad .controls{display:none !important}
     
-    /* NUOVO D-PAD MOBILE CSS */
     #touchControls { position: fixed; inset: 0; pointer-events: none; z-index: 100; display: none; }
     .touch-ui { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: flex-end; padding: 12px; }
     
@@ -218,7 +215,7 @@
       .badge, .pill { padding: 4px 6px; font-size: 0.65rem; margin-bottom: 4px; }
       .btnrow { margin-top: 4px; gap: 4px; justify-content: center; } .btn { padding: 6px 8px; font-size: 0.75rem; flex: 1 1 45%; min-width: auto; }
       .lang-terminal { padding: 5px; margin-bottom: 5px; } .lang-terminal-head { font-size: 0.65rem; margin-bottom: 3px; }
-      .lang-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; } #modeGrid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
+      .lang-grid { grid-template-columns: repeat(4, 1fr); gap: 3px; }
       .lang-option { padding: 4px 2px; justify-content: center; font-size: 0.7rem; min-height: 28px; } .lang-option code { font-size: 0.6rem; padding: 2px 4px; } .lang-option span { display: none; }
       .home-grid { grid-template-columns: 1fr; gap: 6px; display: flex; flex-direction: column; } .panel { padding: 6px; }
       .quick-list { grid-template-columns: repeat(2, 1fr); gap: 4px; } .quick-item { padding: 6px; flex-direction: column; text-align: center; gap: 2px; } .quick-item-score { font-size: 0.65rem; }
@@ -241,7 +238,7 @@
       h1 { font-size: 1.1rem; margin-bottom: 2px; margin-top: 0; } h2 { font-size: 0.9rem; margin-bottom: 2px; margin-top: 0; }
       #screen-splash .content { flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: center; gap: 4px; }
       #screen-splash h1 { width: 100%; font-size: 1.2rem; } #screen-splash .lang-terminal { width: calc(50% - 4px); margin: 0; padding: 4px; } #screen-splash .btnrow { width: 100%; margin-top: 2px; }
-      .lang-terminal-head { font-size: 0.6rem; margin-bottom: 2px; } .lang-grid { grid-template-columns: repeat(4, 1fr); gap: 2px; } #modeGrid { grid-template-columns: repeat(3, 1fr); gap: 2px; }
+      .lang-terminal-head { font-size: 0.6rem; margin-bottom: 2px; } .lang-grid { grid-template-columns: repeat(4, 1fr); gap: 2px; }
       .lang-option { padding: 2px; font-size: 0.65rem; min-height: 24px; justify-content: center; } .lang-option span { display: none; } .lang-option code { font-size: 0.55rem; padding: 1px 3px; }
       .home-grid { grid-template-columns: 1fr 1fr; gap: 8px; } .panel { padding: 6px; justify-content: center; } .btnrow { margin-top: 2px; gap: 4px; justify-content: center; } .btn { padding: 6px 8px; font-size: 0.7rem; flex: 1 1 30%; min-width: auto; }
       .quick-list { grid-template-columns: repeat(2, 1fr); gap: 2px; } .quick-item { padding: 4px; font-size: 0.65rem; } .quick-item-score { font-size: 0.6rem; }
@@ -296,10 +293,11 @@
 
         <div class="lang-terminal">
           <div class="lang-terminal-head"><span id="terminalModeLabel">Terminal mode</span></div>
-          <div id="modeGrid">
-            <button class="lang-option" type="button" data-mode="pc"><span>🖥️ PC</span><code>DESK</code></button>
-            <button class="lang-option" type="button" data-mode="mobile"><span>📱 MOB</span><code>TOUCH</code></button>
-            <button class="lang-option" type="button" data-mode="tv"><span>📺 TV</span><code>REMOTE</code></button>
+          <div id="modeGrid" style="grid-template-columns: repeat(2, 1fr); gap: 8px; display: grid;">
+            <button class="lang-option" type="button" data-mode="pc"><span id="modePcLbl">🖥️ Tastiera</span><code>DESK</code></button>
+            <button class="lang-option" type="button" data-mode="gamepad"><span id="modeGamepadLbl">🎮 Gamepad</span><code>CTRL</code></button>
+            <button class="lang-option" type="button" data-mode="tv"><span id="modeTvLbl">📺 Telecomando</span><code>REMOTE</code></button>
+            <button class="lang-option" type="button" data-mode="mobile"><span id="modeMobLbl">📱 Touch</span><code>MOB</code></button>
           </div>
         </div>
 
@@ -563,14 +561,14 @@ $("backMenu").onclick = () => { state.running = false; state.keys.clear(); state
 $("restartGame").onclick = () => { state.analog={x:0,y:0}; if(typeof clearTouchKeys==="function") clearTouchKeys(); if(state.gameKey) startGame(state.gameKey); };
 
 const I18N = {
-  it:{splashTitle:"TheOldSmokeArcade1984 / boot",splashBadge:"● Terminale Matrix",splashSubtitle:"Seleziona lingua e modalità.",langLabel:"Lingua / Language",enterArcade:"Entra",enterPrivacy:"Privacy",splashFooter:"Tema Neon Laser, 12 giochi.",homeTitleScreen:"TheOldSmokeArcade1984 / home",homeBadge:"● Arcade Terminal",homeDesc:"Cabinato arcade single-file, 12 giochi.",openArcade:"Apri arcade",privacy:"Privacy",quickGames:"Tutti i giochi",quickAccessTitle:"Accesso rapido",privacyTitleScreen:"Privacy & security",privacyHeading:"Modulo privacy",privacyP1:"L'app salva solo dati tecnici minimi in locale.",privacyP2:"Nessun account, nessun tracciamento remoto.",privacyP5:"Puoi azzerare tutti i record in qualsiasi momento.",resetData:"Azzera dati",backHome:"Torna home",menuTitleScreen:"Arcade Loader",cabinet:"● Selezione giochi",home:"Home",backMenu:"Menu",restart:"Restart",controls:"Controlli",splash:"Iniziale",hintMobile:"Modalità Mobile. Usa D-PAD a schermo.",hintPc:"Modalità PC. Usa tastiera.",hintTv:"Modalità TV. Tasti multimediali: ⏪⏩ muovi, ⏯️ OK/Azione."},
-  en:{splashTitle:"TheOldSmokeArcade1984 / boot",splashBadge:"● Matrix terminal",splashSubtitle:"Select language and mode.",langLabel:"Language",enterArcade:"Enter",enterPrivacy:"Privacy",splashFooter:"Neon Laser theme, 12 games.",homeTitleScreen:"TheOldSmokeArcade1984 / home",homeBadge:"● Arcade Terminal",homeDesc:"Single-file arcade cabinet, 12 games.",openArcade:"Open arcade",privacy:"Privacy",quickGames:"All games",quickAccessTitle:"Quick access",privacyTitleScreen:"Privacy & security",privacyHeading:"Privacy module",privacyP1:"The app stores only minimal local technical data.",privacyP2:"No account, no remote tracking.",privacyP5:"You can reset all records at any time.",resetData:"Reset data",backHome:"Back home",menuTitleScreen:"Arcade Loader",cabinet:"● Game Selection",home:"Home",backMenu:"Menu",restart:"Restart",controls:"Controls",splash:"Start",hintMobile:"Mobile mode. Use on-screen D-PAD.",hintPc:"PC mode. Use keyboard.",hintTv:"TV mode. Media keys: ⏪⏩ move, ⏯️ OK/Action."},
-  es:{splashTitle:"TheOldSmokeArcade1984 / arranque",splashBadge:"● Terminal Matrix",splashSubtitle:"Selecciona idioma y modo.",langLabel:"Idioma",enterArcade:"Entrar",enterPrivacy:"Privacidad",splashFooter:"Tema Neon Laser, 12 juegos.",homeTitleScreen:"TheOldSmokeArcade1984 / inicio",homeBadge:"● Arcade Terminal",homeDesc:"Cabina arcade en un solo archivo, 12 juegos.",openArcade:"Abrir arcade",privacy:"Privacidad",quickGames:"Ir a juegos",quickAccessTitle:"Acceso rápido",privacyTitleScreen:"Privacidad y seguridad",privacyHeading:"Módulo de privacidad",privacyP1:"La app guarda solo datos técnicos mínimos en local.",privacyP2:"Sin cuenta, sin rastreo remoto.",privacyP5:"Puedes borrar todos los récords en cualquier momento.",resetData:"Borrar datos",backHome:"Volver",menuTitleScreen:"Arcade Loader",cabinet:"● Selección de juegos",home:"Inicio",backMenu:"Menú",restart:"Reiniciar",controls:"Controles",splash:"Inicial",hintMobile:"Modo Móvil. Usa el D-PAD en pantalla.",hintPc:"Modo PC. Usa teclado.",hintTv:"Modo TV. Teclas multimedia: ⏪⏩ mover, ⏯️ OK/Acción."},
-  fr:{splashTitle:"TheOldSmokeArcade1984 / démarrage",splashBadge:"● Terminal Matrix",splashSubtitle:"Choisissez langue et mode.",langLabel:"Langue",enterArcade:"Entrer",enterPrivacy:"Confidentialité",splashFooter:"Thème Neon Laser, 12 jeux.",homeTitleScreen:"TheOldSmokeArcade1984 / accueil",homeBadge:"● Arcade Terminal",homeDesc:"Borne d'arcade en fichier unique, 12 jeux.",openArcade:"Ouvrir l'arcade",privacy:"Confidentialité",quickGames:"Aller aux jeux",quickAccessTitle:"Accès rapide",privacyTitleScreen:"Confidentialité et sécurité",privacyHeading:"Module de confidentialité",privacyP1:"L'application stocke seulement des données techniques locales minimales.",privacyP2:"Aucun compte, aucun suivi à distance.",privacyP5:"Vous pouvez réinitialiser tous les scores à tout moment.",resetData:"Effacer les données",backHome:"Retour",menuTitleScreen:"Arcade Loader",cabinet:"● Sélection des jeux",home:"Accueil",backMenu:"Menu",restart:"Redémarrer",controls:"Contrôles",splash:"Initial",hintMobile:"Mode Mobile. Utilisez le D-PAD virtuel.",hintPc:"Mode PC. Utilisez le clavier.",hintTv:"Mode TV. Touches médias: ⏪⏩ bouger, ⏯️ OK/Action."},
-  de:{splashTitle:"TheOldSmokeArcade1984 / start",splashBadge:"● Matrix-Terminal",splashSubtitle:"Sprache und Modus wählen.",langLabel:"Sprache",enterArcade:"Start",enterPrivacy:"Datenschutz",splashFooter:"Neon Laser-Thema, 12 Spiele.",homeTitleScreen:"TheOldSmokeArcade1984 / startseite",homeBadge:"● Arcade Terminal",homeDesc:"Arcade-Cabinet als Einzeldatei, 12 Spiele.",openArcade:"Arcade öffnen",privacy:"Datenschutz",quickGames:"Zu den Spielen",quickAccessTitle:"Schnellzugriff",privacyTitleScreen:"Datenschutz & Sicherheit",privacyHeading:"Datenschutzmodul",privacyP1:"Die App speichert nur minimale lokale technische Daten.",privacyP2:"Kein Konto, kein Remote-Tracking.",privacyP5:"Du kannst alle Datensätze jederzeit zurücksetzen.",resetData:"Daten löschen",backHome:"Zurück",menuTitleScreen:"Arcade Loader",cabinet:"● Spieleauswahl",home:"Start",backMenu:"Menü",restart:"Neustart",controls:"Steuerung",splash:"Start",hintMobile:"Mobile-Modus. Nutze virtuelles D-PAD.",hintPc:"PC-Modus. Nutze Tastatur.",hintTv:"TV-Modus. Medientasten: ⏪⏩ bewegen, ⏯️ OK/Aktion."},
-  pt:{splashTitle:"TheOldSmokeArcade1984 / inicialização",splashBadge:"● Terminal Matrix",splashSubtitle:"Selecione idioma e modo.",langLabel:"Idioma",enterArcade:"Entrar",enterPrivacy:"Privacidade",splashFooter:"Tema Neon Laser, 12 jogos.",homeTitleScreen:"TheOldSmokeArcade1984 / início",homeBadge:"● Arcade Terminal",homeDesc:"Cabinete arcade em arquivo único, 12 jogos.",openArcade:"Abrir arcade",privacy:"Privacidade",quickGames:"Ir aos jogos",quickAccessTitle:"Acesso rápido",privacyTitleScreen:"Privacidade e segurança",privacyHeading:"Módulo de privacidade",privacyP1:"O app salva apenas dados técnicos mínimos localmente.",privacyP2:"Sem conta, sem rastreo remoto.",privacyP5:"Você pode resetar todos os recordes a qualquer momento.",resetData:"Apagar dados",backHome:"Voltar",menuTitleScreen:"Arcade Loader",cabinet:"● Seleção de jogos",home:"Início",backMenu:"Menu",restart:"Reiniciar",controls:"Controles",splash:"Inicial",hintMobile:"Modo Mobile. Use o D-PAD na tela.",hintPc:"Modo PC. Use o teclado.",hintTv:"Modo TV. Teclas de mídia: ⏪⏩ mover, ⏯️ OK/Ação."},
-  ja:{splashTitle:"TheOldSmokeArcade1984 / 起動",splashBadge:"● マトリックス端末",splashSubtitle:"言語とモードを選んでください。",langLabel:"言語",enterArcade:"開始",enterPrivacy:"プライバシー",splashFooter:"ネオンレーザー・12ゲーム",homeTitleScreen:"TheOldSmokeArcade1984 / ホーム",homeBadge:"● アーケード",homeDesc:"単一ファイルのアーケード、12ゲーム",openArcade:"アーケード開始",privacy:"プライバシー",quickGames:"ゲームへ",quickAccessTitle:"クイックアクセス",privacyTitleScreen:"プライバシー",privacyHeading:"プライバシーモジュール",privacyP1:"アプリはローカルに最小限のデータのみ保存します。",privacyP2:"アカウントなし、追跡なし",privacyP5:"いつでもデータを削除可能",resetData:"データ削除",backHome:"ホームへ",menuTitleScreen:"アーケード選択",cabinet:"● ゲーム選択",home:"ホーム",backMenu:"メニュー",restart:"リスタート",controls:"操作",splash:"開始画面",hintMobile:"モバイルモード。D-PADを使用。",hintPc:"PCモード。キーボードを使用。",hintTv:"TVモード。メディアキー: ⏪⏩ 移動、⏯️ 決定/アクション。"},
-  zh:{splashTitle:"TheOldSmokeArcade1984 / 启动",splashBadge:"● 矩阵终端",splashSubtitle:"选择语言和模式。",langLabel:"语言",enterArcade:"进入",enterPrivacy:"隐私",splashFooter:"霓虹激光 · 12个游戏",homeTitleScreen:"TheOldSmokeArcade1984 / 首页",homeBadge:"● 街机终端",homeDesc:"单文件街机，12个游戏",openArcade:"进入街机",privacy:"隐私",quickGames:"进入游戏",quickAccessTitle:"快速入口",privacyTitleScreen:"隐私与安全",privacyHeading:"隐私模块",privacyP1:"应用仅在本地保存最少数据。",privacyP2:"无账号、无追踪",privacyP5:"可随时清除数据",resetData:"清除数据",backHome:"返回首页",menuTitleScreen:"游戏选择",cabinet:"● 游戏选择",home:"首页",backMenu:"菜单",restart:"重新开始",controls:"控制",splash:"开始界面",hintMobile:"移动模式。使用屏幕 D-PAD。",hintPc:"PC 模式。使用键盘。",hintTv:"电视模式。媒体键：⏪⏩ 移动，⏯️ 确定/动作。"}
+  it:{splashTitle:"TheOldSmokeArcade1984 / boot",splashBadge:"● Terminale Matrix",splashSubtitle:"Seleziona lingua e modalità.",langLabel:"Lingua / Language",enterArcade:"Entra",enterPrivacy:"Privacy",splashFooter:"Tema Neon Laser, 12 giochi.",homeTitleScreen:"TheOldSmokeArcade1984 / home",homeBadge:"● Arcade Terminal",homeDesc:"Cabinato arcade single-file, 12 giochi.",openArcade:"Apri arcade",privacy:"Privacy",quickGames:"Tutti i giochi",quickAccessTitle:"Accesso rapido",privacyTitleScreen:"Privacy & security",privacyHeading:"Modulo privacy",privacyP1:"L'app salva solo dati tecnici minimi in locale.",privacyP2:"Nessun account, nessun tracciamento remoto.",privacyP5:"Puoi azzerare tutti i record in qualsiasi momento.",resetData:"Azzera dati",backHome:"Torna home",menuTitleScreen:"Arcade Loader",cabinet:"● Selezione giochi",home:"Home",backMenu:"Menu",restart:"Restart",controls:"Controlli",splash:"Iniziale",hintMobile:"Modalità Mobile. Usa D-PAD a schermo.",hintPc:"Modalità PC. Usa tastiera o controller.",hintGamepad:"Modalità Gamepad. Usa D-PAD o Stick analogico e tasti azione.",hintTv:"Modalità TV. Usa telecomando o gamepad.", modePc:"🖥️ Tastiera", modeGamepad:"🎮 Gamepad", modeTv:"📺 Telecomando", modeMob:"📱 Touch"},
+  en:{splashTitle:"TheOldSmokeArcade1984 / boot",splashBadge:"● Matrix terminal",splashSubtitle:"Select language and mode.",langLabel:"Language",enterArcade:"Enter",enterPrivacy:"Privacy",splashFooter:"Neon Laser theme, 12 games.",homeTitleScreen:"TheOldSmokeArcade1984 / home",homeBadge:"● Arcade Terminal",homeDesc:"Single-file arcade cabinet, 12 games.",openArcade:"Open arcade",privacy:"Privacy",quickGames:"All games",quickAccessTitle:"Quick access",privacyTitleScreen:"Privacy & security",privacyHeading:"Privacy module",privacyP1:"The app stores only minimal local technical data.",privacyP2:"No account, no remote tracking.",privacyP5:"You can reset all records at any time.",resetData:"Reset data",backHome:"Back home",menuTitleScreen:"Arcade Loader",cabinet:"● Game Selection",home:"Home",backMenu:"Menu",restart:"Restart",controls:"Controls",splash:"Start",hintMobile:"Mobile mode. Use on-screen D-PAD.",hintPc:"PC mode. Use keyboard or controller.",hintGamepad:"Gamepad mode. Use D-PAD or Analog stick and action buttons.",hintTv:"TV mode. Use media remote or gamepad.", modePc:"🖥️ Keyboard", modeGamepad:"🎮 Gamepad", modeTv:"📺 Remote", modeMob:"📱 Touch"},
+  es:{splashTitle:"TheOldSmokeArcade1984 / arranque",splashBadge:"● Terminal Matrix",splashSubtitle:"Selecciona idioma y modo.",langLabel:"Idioma",enterArcade:"Entrar",enterPrivacy:"Privacidad",splashFooter:"Tema Neon Laser, 12 juegos.",homeTitleScreen:"TheOldSmokeArcade1984 / inicio",homeBadge:"● Arcade Terminal",homeDesc:"Cabina arcade en un solo archivo, 12 juegos.",openArcade:"Abrir arcade",privacy:"Privacidad",quickGames:"Ir a juegos",quickAccessTitle:"Acceso rápido",privacyTitleScreen:"Privacidad y seguridad",privacyHeading:"Módulo de privacidad",privacyP1:"La app guarda solo datos técnicos mínimos en local.",privacyP2:"Sin cuenta, sin rastreo remoto.",privacyP5:"Puedes borrar todos los récords en cualquier momento.",resetData:"Borrar datos",backHome:"Volver",menuTitleScreen:"Arcade Loader",cabinet:"● Selección de juegos",home:"Inicio",backMenu:"Menú",restart:"Reiniciar",controls:"Controles",splash:"Inicial",hintMobile:"Modo Móvil. Usa el D-PAD en pantalla.",hintPc:"Modo PC. Usa teclado o gamepad.",hintTv:"Modo TV. Usa control remoto o gamepad.", modePc:"🖥️ Teclado", modeGamepad:"🎮 Gamepad", modeTv:"📺 Mando TV", modeMob:"📱 Táctil"},
+  fr:{splashTitle:"TheOldSmokeArcade1984 / démarrage",splashBadge:"● Terminal Matrix",splashSubtitle:"Choisissez langue et mode.",langLabel:"Langue",enterArcade:"Entrer",enterPrivacy:"Confidentialité",splashFooter:"Thème Neon Laser, 12 jeux.",homeTitleScreen:"TheOldSmokeArcade1984 / accueil",homeBadge:"● Arcade Terminal",homeDesc:"Borne d'arcade en fichier unique, 12 jeux.",openArcade:"Ouvrir l'arcade",privacy:"Confidentialité",quickGames:"Aller aux jeux",quickAccessTitle:"Accès rapide",privacyTitleScreen:"Confidentialité et sécurité",privacyHeading:"Module de confidentialité",privacyP1:"L'application stocke seulement des données techniques locales minimales.",privacyP2:"Aucun compte, aucun suivi à distance.",privacyP5:"Vous pouvez réinitialiser tous les scores à tout moment.",resetData:"Effacer les données",backHome:"Retour",menuTitleScreen:"Arcade Loader",cabinet:"● Sélection des jeux",home:"Accueil",backMenu:"Menu",restart:"Redémarrer",controls:"Contrôles",splash:"Initial",hintMobile:"Mode Mobile. Utilisez le D-PAD virtuel.",hintPc:"Mode PC. Utilisez le clavier ou la manette.",hintTv:"Mode TV. Utilisez la télécommande ou la manette.", modePc:"🖥️ Clavier", modeGamepad:"🎮 Manette", modeTv:"📺 Télécommande", modeMob:"📱 Tactile"},
+  de:{splashTitle:"TheOldSmokeArcade1984 / start",splashBadge:"● Matrix-Terminal",splashSubtitle:"Sprache und Modus wählen.",langLabel:"Sprache",enterArcade:"Start",enterPrivacy:"Datenschutz",splashFooter:"Neon Laser-Thema, 12 Spiele.",homeTitleScreen:"TheOldSmokeArcade1984 / startseite",homeBadge:"● Arcade Terminal",homeDesc:"Arcade-Cabinet als Einzeldatei, 12 Spiele.",openArcade:"Arcade öffnen",privacy:"Datenschutz",quickGames:"Zu den Spielen",quickAccessTitle:"Schnellzugriff",privacyTitleScreen:"Datenschutz & Sicherheit",privacyHeading:"Datenschutzmodul",privacyP1:"Die App speichert nur minimale lokale technische Daten.",privacyP2:"Kein Konto, kein Remote-Tracking.",privacyP5:"Du kannst alle Datensätze jederzeit zurücksetzen.",resetData:"Daten löschen",backHome:"Zurück",menuTitleScreen:"Arcade Loader",cabinet:"● Spieleauswahl",home:"Start",backMenu:"Menü",restart:"Neustart",controls:"Steuerung",splash:"Start",hintMobile:"Mobile-Modus. Nutze virtuelles D-PAD.",hintPc:"PC-Modus. Nutze Tastatur oder Gamepad.",hintTv:"TV-Modus. Nutze Fernbedienung oder Gamepad.", modePc:"🖥️ Tastatur", modeGamepad:"🎮 Gamepad", modeTv:"📺 Fernbedienung", modeMob:"📱 Touch"},
+  pt:{splashTitle:"TheOldSmokeArcade1984 / inicialização",splashBadge:"● Terminal Matrix",splashSubtitle:"Selecione idioma e modo.",langLabel:"Idioma",enterArcade:"Entrar",enterPrivacy:"Privacidade",splashFooter:"Tema Neon Laser, 12 jogos.",homeTitleScreen:"TheOldSmokeArcade1984 / início",homeBadge:"● Arcade Terminal",homeDesc:"Cabinete arcade em arquivo único, 12 jogos.",openArcade:"Abrir arcade",privacy:"Privacidade",quickGames:"Ir aos jogos",quickAccessTitle:"Acesso rápido",privacyTitleScreen:"Privacidade e segurança",privacyHeading:"Módulo de privacidade",privacyP1:"O app salva apenas dados técnicos mínimos localmente.",privacyP2:"Sem conta, sem rastreo remoto.",privacyP5:"Você pode resetar todos os recordes a qualquer momento.",resetData:"Apagar dados",backHome:"Voltar",menuTitleScreen:"Arcade Loader",cabinet:"● Seleção de jogos",home:"Início",backMenu:"Menu",restart:"Reiniciar",controls:"Controles",splash:"Inicial",hintMobile:"Modo Mobile. Use o D-PAD na tela.",hintPc:"Modo PC. Use o teclado ou controle.",hintTv:"Modo TV. Use o controle remoto ou gamepad.", modePc:"🖥️ Teclado", modeGamepad:"🎮 Gamepad", modeTv:"📺 Controle TV", modeMob:"📱 Toque"},
+  ja:{splashTitle:"TheOldSmokeArcade1984 / 起動",splashBadge:"● マトリックス端末",splashSubtitle:"言語とモードを選んでください。",langLabel:"言語",enterArcade:"開始",enterPrivacy:"プライバシー",splashFooter:"ネオンレーザー・12ゲーム",homeTitleScreen:"TheOldSmokeArcade1984 / ホーム",homeBadge:"● アーケード",homeDesc:"単一ファイルのアーケード、12ゲーム",openArcade:"アーケード開始",privacy:"プライバシー",quickGames:"ゲームへ",quickAccessTitle:"クイックアクセス",privacyTitleScreen:"プライバシー",privacyHeading:"プライバシーモジュール",privacyP1:"アプリはローカルに最小限のデータのみ保存します。",privacyP2:"アカウントなし、追跡なし",privacyP5:"いつでもデータを削除可能",resetData:"データ削除",backHome:"ホームへ",menuTitleScreen:"アーケード選択",cabinet:"● ゲーム選択",home:"ホーム",backMenu:"メニュー",restart:"リスタート",controls:"操作",splash:"開始画面",hintMobile:"モバイルモード。D-PADを使用。",hintPc:"PCモード。キーボードまたはゲームパッドを使用。",hintTv:"TVモード。リモコンまたはゲームパッドを使用。", modePc:"🖥️ キーボード", modeGamepad:"🎮 ゲームパッド", modeTv:"📺 リモコン", modeMob:"📱 タッチ"},
+  zh:{splashTitle:"TheOldSmokeArcade1984 / 启动",splashBadge:"● 矩阵终端",splashSubtitle:"选择语言和模式。",langLabel:"语言",enterArcade:"进入",enterPrivacy:"隐私",splashFooter:"霓虹激光 · 12个游戏",homeTitleScreen:"TheOldSmokeArcade1984 / 首页",homeBadge:"● 街机终端",homeDesc:"单文件街机，12个游戏",openArcade:"进入街机",privacy:"隐私",quickGames:"进入游戏",quickAccessTitle:"快速入口",privacyTitleScreen:"隐私与安全",privacyHeading:"隐私模块",privacyP1:"应用仅在本地保存最少数据。",privacyP2:"无账号、无追踪",privacyP5:"可随时清除数据",resetData:"清除数据",backHome:"返回首页",menuTitleScreen:"游戏选择",cabinet:"● 游戏选择",home:"首页",backMenu:"菜单",restart:"重新开始",controls:"控制",splash:"开始界面",hintMobile:"移动模式。使用屏幕 D-PAD。",hintPc:"PC 模式。使用键盘或游戏手柄。",hintTv:"电视模式。使用遥控器或游戏手柄。", modePc:"🖥️ 键盘", modeGamepad:"🎮 游戏手柄", modeTv:"📺 遥控器", modeMob:"📱 触控"}
 };
 function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en?.[key] || I18N.it[key] || key; }
 
@@ -607,6 +605,10 @@ function applyLanguage(){
   set("quickAccessTitle","quickAccessTitle"); set("backHome1","backHome"); set("backHome2","home");
   set("backMenu","backMenu"); set("restartGame","restart"); set("backSplash3","splash");
   set("instructionTitle","controls"); set("privacyTitleScreen","privacyTitleScreen"); set("privacyHeading", "privacyHeading");
+  
+  // TRADUZIONE BOTTONI MODALITÀ (LA FIX CHE MANCAVA)
+  set("modePcLbl", "modePc"); set("modeGamepadLbl", "modeGamepad"); set("modeTvLbl", "modeTv"); set("modeMobLbl", "modeMob");
+
   const p1 = $("privacyP1"); if(p1) p1.innerHTML = "<strong>" + (lang==="it"?"Finalità.":lang==="en"?"Purpose.":lang==="es"?"Finalidad.":lang==="fr"?"Finalité.":lang==="de"?"Zweck.":lang==="pt"?"Finalidade.":lang==="ja"?"目的。":"目的。") + "</strong> " + t("privacyP1");
   set("privacyP2", "privacyP2"); set("privacyP5", "privacyP5"); set("menuTitleScreen","menuTitleScreen"); set("cabinetBadge","cabinet");
   renderGrid(); renderQuickList(); applyMode(); updateStatus();
@@ -619,7 +621,28 @@ let lang = localStorage.getItem("sa-lang") || "it";
 const prefs = { crt: localStorage.getItem("sa-pref-crt") || "on", glow: localStorage.getItem("sa-pref-glow") || "on" };
 function applyPrefs(){ document.body.classList.remove("fx-off","fx-low","glow-off","glow-low"); if(prefs.crt === "low") document.body.classList.add("fx-low"); if(prefs.crt === "off") document.body.classList.add("fx-off"); if(prefs.glow === "low") document.body.classList.add("glow-low"); if(prefs.glow === "off") document.body.classList.add("glow-off"); }
 function updateStatus(extra=""){ const st = $("systemStatus"); if(st) { const gamesTxt = lang === "it" ? "12 giochi" : lang === "es" ? "12 juegos" : lang === "fr" ? "12 jeux" : lang === "de" ? "12 Spiele" : lang === "ja" ? "12ゲーム" : lang === "zh" ? "12个游戏" : "12 games"; const fsTxt = document.fullscreenElement ? (lang === "it" ? "fullscreen attivo" : "fullscreen active") : (lang === "it" ? "fullscreen obbligatorio" : "fullscreen required"); st.textContent = `${gamesTxt} • CRT ${prefs.crt.toUpperCase()} • Glow ${prefs.glow.toUpperCase()} • ${fsTxt}`; } }
-function applyMode(){ document.body.classList.remove("mode-pc","mode-mobile","mode-tv","touch","lang-ja","lang-zh"); document.body.classList.add("mode-" + deviceMode); if(deviceMode === "mobile") document.body.classList.add("touch"); if(lang === "ja") document.body.classList.add("lang-ja"); if(lang === "zh") document.body.classList.add("lang-zh"); document.querySelectorAll("#modeGrid .lang-option").forEach(btn=>{ btn.classList.remove("active"); if(btn.dataset.mode === deviceMode) btn.classList.add("active"); }); const hint = $("touchHint"); if(hint){ hint.textContent = deviceMode === "mobile" ? t("hintMobile") : deviceMode === "tv" ? t("hintTv") : t("hintPc"); } }
+
+function applyMode(){ 
+  document.body.classList.remove("mode-pc","mode-mobile","mode-tv","mode-gamepad","touch","lang-ja","lang-zh"); 
+  document.body.classList.add("mode-" + deviceMode); 
+  if(deviceMode === "mobile") document.body.classList.add("touch"); 
+  if(lang === "ja") document.body.classList.add("lang-ja"); 
+  if(lang === "zh") document.body.classList.add("lang-zh"); 
+  
+  document.querySelectorAll("#modeGrid .lang-option").forEach(btn=>{ 
+    btn.classList.remove("active"); 
+    if(btn.dataset.mode === deviceMode) btn.classList.add("active"); 
+  }); 
+  
+  const hint = $("touchHint"); 
+  if(hint){ 
+    if (deviceMode === "mobile") hint.textContent = t("hintMobile");
+    else if (deviceMode === "tv") hint.textContent = t("hintTv");
+    else if (deviceMode === "gamepad") hint.textContent = t("hintGamepad") || "Modalità Gamepad attiva.";
+    else hint.textContent = t("hintPc");
+  } 
+}
+
 document.querySelectorAll("#modeGrid .lang-option").forEach(btn => { btn.addEventListener("click", () => { deviceMode = btn.dataset.mode; localStorage.setItem("sa-mode", deviceMode); applyMode(); updateMobileGameLock(screens.game.classList.contains("active") ? "game" : "splash"); checkEnforcement(); }); });
 function syncLanguageUI(){ document.querySelectorAll(".lang-option[data-lang]").forEach(btn => btn.classList.toggle("active", btn.dataset.lang === lang)); }
 document.querySelectorAll(".lang-option[data-lang]").forEach(btn => { btn.onclick = () => { lang = btn.dataset.lang; localStorage.setItem("sa-lang", lang); applyLanguage(); syncLanguageUI(); }; });
@@ -681,7 +704,6 @@ canvas.addEventListener("touchmove", (e) => {
   const t = e.touches[0], dx = t.clientX - swipeStart.x, dy = t.clientY - swipeStart.y; 
   if (state.gameKey === "breakout") { state.game.pad.x = Math.max(20, Math.min(640, state.game.pad.x + dx * 1.5)); swipeStart = {x:t.clientX, y:t.clientY}; e.preventDefault(); return; } 
   if (state.gameKey === "pong") { state.game.p = Math.max(20, Math.min(640, state.game.p + dy * 1.5)); swipeStart = {x:t.clientX, y:t.clientY}; e.preventDefault(); return; } 
-  /* Per gli altri giochi ora c'è il D-Pad a schermo che è più preciso per il retro-gaming neon */
 }, {passive:false});
 
 function clearTouchKeys(){ 
@@ -735,7 +757,8 @@ const games = {
     name:"PONG", setup(){ this.p=330; this.cpu=330; this.ball={x:400,y:400,vx:320,vy:220}; }, input(){},
     update(dt){
       const sp=(deviceMode==="mobile" ? 460 : 420);
-      if(state.keys.has("ArrowUp")||state.keys.has("w")) this.p-=sp*dt; if(state.keys.has("ArrowDown")||state.keys.has("s")) this.p+=sp*dt;
+      let dy = state.analog.y !== 0 ? state.analog.y : (state.keys.has("ArrowUp")||state.keys.has("w") ? -1 : (state.keys.has("ArrowDown")||state.keys.has("s") ? 1 : 0));
+      this.p += dy * sp * dt;
       this.p=Math.max(20,Math.min(640,this.p)); this.cpu += ((this.ball.y-70)-this.cpu)*Math.min(1,dt*3.4); this.cpu=Math.max(20,Math.min(640,this.cpu));
       this.ball.x+=this.ball.vx*dt; this.ball.y+=this.ball.vy*dt;
       if(this.ball.y<10){ this.ball.y=10; this.ball.vy=Math.abs(this.ball.vy); playSfx('blip'); }
@@ -756,7 +779,10 @@ const games = {
     name:"DODGE", setup(){ this.p={x:382,y:700,w:36,h:36}; this.sh=[]; this.spawn=.2; }, input(){},
     update(dt){ 
       const sp=(deviceMode==="mobile" ? 290 : 360); 
-      if(state.keys.has("ArrowLeft")||state.keys.has("a")) this.p.x-=sp*dt; if(state.keys.has("ArrowRight")||state.keys.has("d")) this.p.x+=sp*dt; if(state.keys.has("ArrowUp")||state.keys.has("w")) this.p.y-=sp*dt; if(state.keys.has("ArrowDown")||state.keys.has("s")) this.p.y+=sp*dt; 
+      let dx = state.analog.x !== 0 ? state.analog.x : (state.keys.has("ArrowLeft")||state.keys.has("a") ? -1 : (state.keys.has("ArrowRight")||state.keys.has("d") ? 1 : 0));
+      let dy = state.analog.y !== 0 ? state.analog.y : (state.keys.has("ArrowUp")||state.keys.has("w") ? -1 : (state.keys.has("ArrowDown")||state.keys.has("s") ? 1 : 0));
+      this.p.x += dx * sp * dt;
+      this.p.y += dy * sp * dt;
       this.p.x=Math.max(10,Math.min(754,this.p.x)); this.p.y=Math.max(10,Math.min(754,this.p.y)); this.spawn-=dt; state.score+=dt*10; 
       if(this.spawn<=0){ 
         this.sh.push({x:20+Math.random()*760,y:-20,s:18+Math.random()*18,vy:220+Math.random()*300,vx:-80+Math.random()*160, c:`hsl(${(Math.random()*360)|0}, 100%, 60%)`}); 
@@ -781,7 +807,8 @@ const games = {
     }, input(){},
     update(dt){
       const sp=(deviceMode==="mobile" ? 360 : 460);
-      if(state.keys.has("ArrowLeft")||state.keys.has("a")) this.pad.x-=sp*dt; if(state.keys.has("ArrowRight")||state.keys.has("d")) this.pad.x+=sp*dt;
+      let dx = state.analog.x !== 0 ? state.analog.x : (state.keys.has("ArrowLeft")||state.keys.has("a") ? -1 : (state.keys.has("ArrowRight")||state.keys.has("d") ? 1 : 0));
+      this.pad.x += dx * sp * dt;
       this.pad.x=Math.max(20,Math.min(640,this.pad.x)); const b=this.ball; b.x+=b.vx*dt; b.y+=b.vy*dt;
       if(b.x<b.r){ b.x=b.r; b.vx=Math.abs(b.vx); playSfx('blip'); } if(b.x>800-b.r){ b.x=800-b.r; b.vx=-Math.abs(b.vx); playSfx('blip'); }
       if(b.y<b.r){ b.y=b.r; b.vy=Math.abs(b.vy); playSfx('blip'); } if(b.y>820) return gameOver();
@@ -817,7 +844,8 @@ const games = {
     name:"SHOOTER", setup(){ this.p={x:380,y:720,w:40,h:40}; this.b=[]; this.e=[]; this.spawn=.6; this.cool=0; }, input(k){ },
     update(dt){ 
       const moveSp=(deviceMode==="mobile" ? 280 : 360); 
-      if(state.keys.has("ArrowLeft")||state.keys.has("a")) this.p.x-=moveSp*dt; if(state.keys.has("ArrowRight")||state.keys.has("d")) this.p.x+=moveSp*dt; 
+      let dx = state.analog.x !== 0 ? state.analog.x : (state.keys.has("ArrowLeft")||state.keys.has("a") ? -1 : (state.keys.has("ArrowRight")||state.keys.has("d") ? 1 : 0));
+      this.p.x += dx * moveSp * dt;
       this.p.x=Math.max(10,Math.min(750,this.p.x)); this.cool=Math.max(0,this.cool-dt); this.spawn-=dt; 
       if((state.keys.has(" ") || state.keys.has("action") || state.keys.has("Enter")) && this.cool<=0){ this.b.push({x:this.p.x+18,y:this.p.y,v:520}); this.cool=.22; playSfx('shoot'); }
       if(this.spawn<=0){ this.e.push({x:20+Math.random()*720,y:-40,w:30,h:30,vy:120+Math.random()*100, c:`hsl(${(Math.random()*360)|0}, 100%, 60%)`}); this.spawn=Math.max(.18,.7-state.score/200); } 
@@ -853,7 +881,8 @@ const games = {
     setup(){ this.p={x:400,y:720,w:44,h:22, c:"#00f0ff"}; this.good=[]; this.bad=[]; this.sg=.55; this.sb=.9; }, input(){},
     update(dt){ 
       const moveSp=(deviceMode==="mobile" ? 280 : 360); 
-      if(state.keys.has("ArrowLeft")||state.keys.has("a")) this.p.x-=moveSp*dt; if(state.keys.has("ArrowRight")||state.keys.has("d")) this.p.x+=moveSp*dt; 
+      let dx = state.analog.x !== 0 ? state.analog.x : (state.keys.has("ArrowLeft")||state.keys.has("a") ? -1 : (state.keys.has("ArrowRight")||state.keys.has("d") ? 1 : 0));
+      this.p.x += dx * moveSp * dt;
       this.p.x=Math.max(10,Math.min(746,this.p.x)); this.sg-=dt; this.sb-=dt; state.score+=dt*2; 
       if(this.sg<=0){ this.good.push({x:10+Math.random()*760,y:-20,s:18,vy:220+Math.random()*120, c:`hsl(${(Math.random()*360)|0}, 100%, 55%)`}); this.sg=.18+Math.random()*.27; } 
       if(this.sb<=0){ this.bad.push({x:10+Math.random()*760,y:-20,s:22,vy:240+Math.random()*140}); this.sb=.4+Math.random()*.5; } 
@@ -918,24 +947,50 @@ const games = {
 };
 
 let lastGamepadState = {};
+
 function pollGamepads() {
-  const gamepads = navigator.getGamepads ? navigator.getGamepads() : []; 
+  const gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
   let gp = null;
-  for(let i=0; i<gamepads.length; i++) { if(gamepads[i] && gamepads[i].connected) { gp = gamepads[i]; break; } }
-  if (!gp) return; 
+  for(let i=0; i<gamepads.length; i++) { 
+    if(gamepads[i] && gamepads[i].connected) { gp = gamepads[i]; break; } 
+  }
   
-  const threshold = 0.4; 
+  if (!gp) {
+    state.analog.x = 0; state.analog.y = 0;
+    return; 
+  }
+
+  const deadzone = 0.25; 
   const b = gp.buttons;
   const a = gp.axes;
-  const isP = (idx) => b[idx] && b[idx].pressed;
+  
+  const isP = (idx) => b && b.length > idx && (typeof b[idx] === "object" ? b[idx].pressed : b[idx] > 0.5);
 
-  const up = isP(12) || (a[1] && a[1] < -threshold) || (a[3] && a[3] < -threshold) || (a[9] && (a[9] === -1 || a[9] === -0.7142857313156128 || a[9] === 1.2857142686843872));
-  const down = isP(13) || (a[1] && a[1] > threshold) || (a[3] && a[3] > threshold) || (a[9] && (a[9] === 0.1428571492433548 || a[9] === -0.1428571492433548 || a[9] === 0.4285714328289032));
-  const left = isP(14) || (a[0] && a[0] < -threshold) || (a[2] && a[2] < -threshold) || (a[9] && (a[9] === 0.7142857313156128 || a[9] === 1 || a[9] === 0.4285714328289032));
-  const right = isP(15) || (a[0] && a[0] > threshold) || (a[2] && a[2] > threshold) || (a[9] && (a[9] === -0.4285714328289032 || a[9] === -0.7142857313156128 || a[9] === -0.1428571492433548));
+  let ax = 0, ay = 0;
+  
+  if (a && a.length >= 2) {
+    if (Math.abs(a[0]) > deadzone) ax = a[0];
+    if (Math.abs(a[1]) > deadzone) ay = a[1];
+  }
+  if (a && a.length >= 4 && ax === 0 && ay === 0) { 
+    if (Math.abs(a[2]) > deadzone) ax = a[2];
+    if (Math.abs(a[3]) > deadzone) ay = a[3];
+  }
+  if (a && a.length >= 6 && ax === 0 && ay === 0) {
+    if (Math.abs(a[4]) > deadzone) ax = a[4];
+    if (Math.abs(a[5]) > deadzone) ay = a[5];
+  }
 
-  const enter = isP(0) || isP(1) || isP(2) || isP(3) || isP(9);
-  const escape = isP(8) || isP(4) || isP(5) || isP(16);
+  state.analog.x = ax;
+  state.analog.y = ay;
+
+  const up = isP(12) || isP(19) || ay < -deadzone || (a && a[9] !== undefined && (a[9] === -1 || a[9] === -0.7142857313156128 || a[9] === 1.2857142686843872));
+  const down = isP(13) || isP(20) || ay > deadzone || (a && a[9] !== undefined && (a[9] === 0.1428571492433548 || a[9] === -0.1428571492433548 || a[9] === 0.4285714328289032));
+  const left = isP(14) || isP(21) || ax < -deadzone || (a && a[9] !== undefined && (a[9] === 0.7142857313156128 || a[9] === 1 || a[9] === 0.4285714328289032));
+  const right = isP(15) || isP(22) || ax > deadzone || (a && a[9] !== undefined && (a[9] === -0.4285714328289032 || a[9] === -0.7142857313156128 || a[9] === -0.1428571492433548));
+
+  const enter = isP(0) || isP(1) || isP(2) || isP(3) || isP(6) || isP(7) || isP(23);
+  const escape = isP(8) || isP(9) || isP(16) || isP(4) || isP(5) || isP(10) || isP(11) || isP(27);
 
   const pressed = { "ArrowUp": up, "ArrowDown": down, "ArrowLeft": left, "ArrowRight": right, "Enter": enter, "Escape": escape };
 
@@ -943,6 +998,7 @@ function pollGamepads() {
     if (isPressed && !lastGamepadState[key]) {
       state.keys.add(key);
       if (key === "Enter") state.keys.add("action");      
+      
       if (state.running && state.game && state.game.input) { 
         state.game.input(key); 
       } else if (!state.running) {
@@ -951,7 +1007,7 @@ function pollGamepads() {
             const dy = key === "ArrowUp" ? -1 : key === "ArrowDown" ? 1 : 0; 
             moveSpatialFocus(dx, dy);
          } else if (key === "Enter") { 
-            if (document.activeElement && document.activeElement.tagName.match(/BUTTON|SELECT|DIV/)) { 
+            if (document.activeElement && document.activeElement.tagName.match(/BUTTON|SELECT|DIV|A/)) { 
                if(document.activeElement.tagName !== 'SELECT') document.activeElement.click(); 
             }
          } else if (key === "Escape") { 
