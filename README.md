@@ -58,7 +58,7 @@ Il gioco è completamente web-based. Non richiede installazioni:
 Il terminale riconosce automaticamente il tuo dispositivo:
 - **PC:** Usa i tasti direzionali (o WASD) per muoverti e la barra spaziatrice (o Invio) come tasto Azione.
 - **Mobile / Touch:** Usa il D-PAD virtuale e il tasto `A` a schermo. In giochi come *Memory*, tocca direttamente i quadranti sul display!
-- **Console / TV:** Utilizza il D-PAD del tuo gamepad e i pulsanti principali per muoverti nei menu e giocare.
+- **Console / Controller:** Utilizza il D-PAD del tuo gamepad e i pulsanti principali per muoverti nei menu e giocare.
 
 ---
 
