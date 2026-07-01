@@ -44,7 +44,7 @@ Affronta le 12 sfide incluse nel sistema. Ogni gioco ha la sua meccanica unica p
 Il gioco è completamente web-based. Non richiede installazioni:
 
 **Opzione 1: Gioca online via GitHub Pages**  
-👉 [Gioca Ora a TheOldSmokeArcade1984](https://theoldsmokearcade1984.github.io/THeTwelveClassicGameTheOldSmokeArcade1984)
+👉 [Gioca Ora a TheOldSmokeArcade1984](https://theoldsmokearcade1984.github.io/TheTwelveClassicGameTheOldSmokeArcade1984/)
 
 **Opzione 2: Esecuzione Locale**  
 1. Scarica o clona questa repository.
